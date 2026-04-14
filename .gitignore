@@ -32,5 +32,21 @@ Thumbs.db
 target/
 Cargo.lock
 
-# Data (keep csvs, keep outputs for reference)
+# Large data files (5.8GB total - too large for GitHub)
+202301-citibike-tripdata/
+202302-citibike-tripdata/
+202303-citibike-tripdata/
+202304-citibike-tripdata/
+202305-citibike-tripdata/
+202306-citibike-tripdata/
+202307-citibike-tripdata/
+202308-citibike-tripdata/
+202309-citibike-tripdata/
+202310-citibike-tripdata/
+202311-citibike-tripdata/
+202312-citibike-tripdata/
+
+# Large output files (>100MB - too large for GitHub)
+output/
+*.pkl
 *.parquet
