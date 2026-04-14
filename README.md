@@ -1,7 +1,7 @@
-# 🚴 Resilience & Liquidity Analysis: NYC Citi Bike
+# Resilience & Liquidity Analysis: NYC Citi Bike
 **Bayesian Benchmarking of Urban Mobility Shocks**
 
-## 📋 Table of Contents
+## Table of Contents
 - [Overview](#overview)
 - [Key Events (2023)](#key-events-2023)
 - [Inference Results](#inference-results)
@@ -9,8 +9,6 @@
 - [Black Swan Events](#black-swan-events)
 - [8 Analytical Visualizations](#8-analytical-visualizations)
 - [Architecture](#architecture)
-- [Quick Start](#quick-start)
-- [FAQ & Interview Guide](#faq--interview-guide)
 - [Production Deployment](#production-deployment)
 - [References](#references)
 
@@ -40,7 +38,7 @@ This project investigates the structural resilience of New York City's bike-shar
 
 ## Inference Results
 
-### 🎯 Key Findings
+### Key Findings
 
 #### Resilience Metrics
 | Metric | Value | Interpretation |
@@ -77,7 +75,7 @@ This project investigates the structural resilience of New York City's bike-shar
 #### Model Performance (Extreme Weather Days)
 | Model | RMSE | MAE | Advantage |
 |-------|------|-----|-----------|
-| **Orbit BSTS** ⭐ | 0.1420 | 0.089 | Baseline |
+| Orbit BSTS | 0.1420 | 0.089 | Baseline |
 | **Facebook Prophet** | 0.1890 | 0.124 | +33% error |
 | **ARIMAX** | 0.2010 | 0.142 | +42% error |
 | **Naive Mean** | 0.2870 | 0.186 | +102% error |
@@ -221,6 +219,8 @@ $$\boxed{y_t = \mu_t + s_t + \beta X_t + \epsilon_t}$$
 **Purpose**: Visualize forecast uncertainty vs actuals
 **File**: `visualizations/01_bayesian_fan_chart.png`
 
+![Bayesian Fan Chart](visualizations/01_bayesian_fan_chart.png)
+
 **What it shows**:
 - Actual trip demand (black line)
 - Point forecast (blue line)
@@ -238,6 +238,8 @@ $$\boxed{y_t = \mu_t + s_t + \beta X_t + \epsilon_t}$$
 **Purpose**: Quantify "systemic inertia" - recovery time post-shock
 **File**: `visualizations/02_impulse_response.png`
 
+![Impulse Response Function](visualizations/02_impulse_response.png)
+
 **What it shows**:
 - Y-axis: Response magnitude (fraction of shock remaining)
 - X-axis: Hours post-shock
@@ -253,6 +255,8 @@ $$\boxed{y_t = \mu_t + s_t + \beta X_t + \epsilon_t}$$
 ### Chart 3: Posterior Beta Distribution
 **Purpose**: Shock sensitivity by neighborhood (elasticity)
 **File**: `visualizations/03_posterior_beta.png`
+
+![Posterior Beta Distribution](visualizations/03_posterior_beta.png)
 
 **What it shows**:
 - Distribution of β (precipitation coefficient)
@@ -271,6 +275,8 @@ $$\boxed{y_t = \mu_t + s_t + \beta X_t + \epsilon_t}$$
 **Purpose**: Validate fat-tail assumption (Student-T vs Normal)
 **File**: `visualizations/04_residual_qq.png`
 
+![Residual Q-Q Plot](visualizations/04_residual_qq.png)
+
 **What it shows**:
 - Left panel: Q-Q plot of residuals vs Normal
 - Right panel: Histogram + Normal fit + Student-T fit
@@ -286,6 +292,8 @@ $$\boxed{y_t = \mu_t + s_t + \beta X_t + \epsilon_t}$$
 ### Chart 5: Liquidity Surface Heatmap
 **Purpose**: 3D map of station availability
 **File**: `visualizations/05_liquidity_heatmap.png`
+
+![Liquidity Surface Heatmap](visualizations/05_liquidity_heatmap.png)
 
 **What it shows**:
 - Rows: Top 20 stations
@@ -304,6 +312,8 @@ $$\boxed{y_t = \mu_t + s_t + \beta X_t + \epsilon_t}$$
 **Purpose**: Network dynamics - "all correlations go to 1" during crisis
 **File**: `visualizations/06_correlation_convergence.png`
 
+![Correlation Convergence](visualizations/06_correlation_convergence.png)
+
 **What it shows**:
 - Left histogram: Pre-shock station correlations (ρ̄ = 0.35)
 - Right histogram: During-shock correlations (ρ̄ = 0.72)
@@ -320,6 +330,8 @@ $$\boxed{y_t = \mu_t + s_t + \beta X_t + \epsilon_t}$$
 ### Chart 7: Expected Shortfall (ES)
 **Purpose**: Rolling metric of unmet demand (economic cost)
 **File**: `visualizations/07_expected_shortfall.png`
+
+![Expected Shortfall](visualizations/07_expected_shortfall.png)
 
 **What it shows**:
 - Y-axis: Unmet demand (trips)
@@ -341,6 +353,8 @@ $$\boxed{y_t = \mu_t + s_t + \beta X_t + \epsilon_t}$$
 ### Chart 8: Model Comparison Bar Chart
 **Purpose**: Validate Bayesian advantage
 **File**: `visualizations/08_model_comparison.png`
+
+![Model Comparison](visualizations/08_model_comparison.png)
 
 **What it shows**:
 - RMSE bars for 4 models on extreme weather days
@@ -381,81 +395,6 @@ $$\boxed{y_t = \mu_t + s_t + \beta X_t + \epsilon_t}$$
 - **Notebooks**: `python/notebooks/05_interview_story.ipynb`
 - **Tests**: `tests/test_*.py` (>80% coverage)
 - **Demo**: `demo.py` (10-minute presentation)
-
----
-
-## Quick Start
-
-### Run Full Pipeline
-```bash
-# Phase I: ETL
-cd rust_etl
-cargo build --release
-RUST_LOG=info cargo run --release
-
-# Phase II: Modeling
-cd ../python
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
-# Phase III: Visualizations
-jupyter notebook notebooks/05_interview_story.ipynb
-```
-
-### View Results
-```bash
-# Interactive dashboard
-open visualizations/index.html
-
-# Run tests
-pytest tests/ -v --cov=python/src
-
-# Execute demo
-python3 demo.py
-```
-
----
-
-## FAQ & Interview Guide
-
-### Q1: Why BSTS instead of deep learning (LSTM/GRU)?
-**A**:
-- **Interpretability**: Posterior distributions enable risk quantification (40% probability of shortage)
-- **Performance**: 36% accuracy advantage on extreme weather
-- **Data efficiency**: Works with 1 year of data (deep learning needs 5-10 years)
-- **Uncertainty quantification**: BSTS provides credible intervals; NN provides point estimates only
-- **Operationalization**: Deploy posterior samples as probabilistic triggers for rebalancing
-
-### Q2: How would you deploy this to production?
-**A**:
-1. **Real-time ETL**: Stream Citi Bike API → Kafka → Parquet lake (15-min buckets)
-2. **Posterior Cache**: Load pre-computed HMC samples (10,000 per parameter)
-3. **Scoring**: Score incoming data → posterior predictive check
-4. **Alerting**: If P(shortage | shock) > 80% in next 6h → trigger rebalancing
-5. **Dashboard**: Live trip counts + forecast CI + rebalancing recommendations
-6. **Tech Stack**: Python (Orbit) + Kafka + Docker + FastAPI
-
-### Q3: What are the key limitations?
-**A**:
-- **Data scope**: Only 1 year (2023); model may not generalize to multi-year cycles
-- **Forecasting horizon**: Reliable 6h ahead; unreliable >6h during extreme events
-- **Physical constraints**: Doesn't model bike mechanics, dock capacity, or weather severity
-- **Equity**: Downtown-centric data (higher sampling density)
-
-### Q4: How do you handle the "equity gap" finding?
-**A**:
-- **Evidence**: Downtown recovers 2x faster than outer boroughs
-- **Root cause**: Higher transit redundancy (subway, bus) in financial district
-- **Policy recommendation**: Pre-position bikes in outer boroughs before shock events
-- **Expected impact**: Reduce equity gap by 15%
-
-### Q5: What's the next research direction?
-**A**:
-- **Spatial modeling**: CAR model (Conditional Autoregressive) for cross-station spillovers
-- **Causal inference**: BART or doubly robust estimation to quantify rebalancing impact
-- **Hierarchical BSTS**: Multi-scale (booth ↔ station ↔ borough ↔ city)
-- **Real-time detection**: Bayesian changepoint analysis for shock onset
 
 ---
 
@@ -586,6 +525,4 @@ Weather API (NOAA)    Transit API (MTA)    Citi Bike API
 
 ---
 
-**Status**: ✅ Production Ready | Interview Ready | Deployment Ready
-**Last Updated**: 2024-04-13
-**Version**: 1.0.0-complete
+Author: Dipanta Bhattacharyya
