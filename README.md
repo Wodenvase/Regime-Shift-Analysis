@@ -432,13 +432,6 @@ Weather API (NOAA)    Transit API (MTA)    Citi Bike API
   └─ Equity metrics
 ```
 
-### Deployment Checklist
-- [ ] Stage 1: Offline batch predictions (this project)
-- [ ] Stage 2: Real-time scoring API (FastAPI)
-- [ ] Stage 3: Live dashboard (Streamlit/Plotly)
-- [ ] Stage 4: Automated rebalancing triggers (Citi Bike integration)
-- [ ] Stage 5: Multi-city expansion (DC, SF, LA)
-
 ---
 
 ## Project Structure
